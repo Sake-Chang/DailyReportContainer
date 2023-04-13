@@ -1,28 +1,29 @@
-#0. ubuntu:22.04をベースにする
+# 0. ubuntu:22.04をベースにする
 FROM ubuntu:22.04
 
-#1. command_tutorialディレクトリをルートディレクトリに作成してその中にfirstvi.txtを作成
+# 1. command_tutorialディレクトリをルートディレクトリに作成して
+#    そのなかにfirstvi.txtを作成
 RUN mkdir /command_tutorial
 RUN touch /command_tutorial/firstvi.txt
 
-#2. viインストール
+# 2. viのインストール
 RUN apt update
 RUN apt -y install vim
 
-#3. ubuntuの日本語対応
+# 3. ubuntuの日本語対応
 RUN apt -y install language-pack-ja
 RUN update-locale LANG=ja_JP.utf8
 ENV LANG ja_JP.utf8
 
-#4. 日本時間の設定
+# 4. 日本時間（JST）の設定
 RUN DEBIAN_FRONTEND=noninteractive apt -y install tzdata
-RUN echo 'Asia/Tokyo' > etc/timezone
+RUN echo 'Asia/Tokyo' > /etc/timezone
 ENV TZ Asia/Tokyo
 
-#5. MySQL(Client)のインストール
+# 5. MySQL(Client)のインストール
 RUN apt -y install mysql-client-8.0
 
-#6. MySQL(Server)のインストール
+# 6. MySQL(Server)のインストール
 RUN apt -y install mysql-server-8.0
 RUN usermod -d /var/lib/mysql mysql
 RUN sed -i -e "s/^bind-address\s*=\s*127.0.0.1/bind-address = 0.0.0.0/" /etc/mysql/mysql.conf.d/mysqld.cnf
